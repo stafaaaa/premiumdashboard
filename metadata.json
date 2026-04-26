@@ -1,6 +1,8 @@
-{
-  "name": "Premium Dashboard Explorer",
-  "description": "A high-visibility, professional dashboard with customizable widget tile designs and premium UI elements.",
-  "requestFramePermissions": [],
-  "majorCapabilities": []
-}
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
