@@ -12,7 +12,6 @@ import { WeatherWidget } from './components/WeatherWidget.tsx';
 import { CalendarWidget } from './components/CalendarWidget.tsx';
 import { SpotifyWidget } from './components/SpotifyWidget.tsx';
 import { SlideshowWidget } from './components/SlideshowWidget.tsx';
-import { ClockWidget } from './components/ClockWidget.tsx';
 import { TileDesignSettings, DEFAULT_SETTINGS } from './types.ts';
 import { format } from 'date-fns';
 
@@ -128,9 +127,8 @@ export default function App() {
           <CalendarWidget settings={settings} />
         </div>
 
-        {/* Column 2: Clock & Slideshow */}
-        <div className="grid grid-rows-[30%_1fr] gap-4 h-full overflow-hidden">
-          <ClockWidget settings={settings} time={currentTime} />
+        {/* Column 2: Slideshow */}
+        <div className="h-full overflow-hidden">
           <SlideshowWidget settings={settings} />
         </div>
 
