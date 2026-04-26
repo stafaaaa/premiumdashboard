@@ -133,7 +133,7 @@ export default function App() {
         </div>
 
         {/* Column 3: Weather & Spotify */}
-        <div className="grid grid-rows-[48%_1fr] gap-4 h-full overflow-hidden">
+        <div className="grid grid-rows-[1fr_130px] gap-4 h-full overflow-hidden">
           <WeatherWidget settings={settings} />
           <SpotifyWidget settings={settings} />
         </div>

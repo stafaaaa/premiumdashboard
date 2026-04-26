@@ -12,6 +12,7 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ settings }) => {
   const [weatherData, setWeatherData] = useState<{
     temp: number;
     condition: string;
+    windSpeed: number;
     forecast: { day: string; temp: number; icon: string }[];
   } | null>(null);
   const [error, setError] = useState(false);
@@ -33,7 +34,7 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ settings }) => {
       const { latitude, longitude } = geoData.results[0];
 
       // 2. Fetch weather
-      const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,is_day&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`);
+      const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,is_day,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`);
       const data = await weatherRes.json();
 
       const getWeatherIcon = (code: number, isDay: number = 1) => {
@@ -53,6 +54,7 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ settings }) => {
       setWeatherData({
         temp: Math.round(data.current.temperature_2m),
         condition: getWeatherIcon(data.current.weather_code, data.current.is_day),
+        windSpeed: Math.round(data.current.wind_speed_10m),
         forecast: data.daily.time.slice(1, 6).map((time: string, idx: number) => ({
           day: days[new Date(time).getDay()],
           temp: Math.round(data.daily.temperature_2m_max[idx + 1]),
@@ -213,7 +215,7 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ settings }) => {
         <RefreshCw size={14} className="text-zinc-500" />
       </button>
 
-      <div className="flex flex-col gap-4 h-full justify-between py-2">
+      <div className="flex flex-col gap-3 h-full justify-start py-2">
         {error && (
           <div className="absolute inset-0 bg-red-500/5 backdrop-blur-[2px] flex items-center justify-center z-10 rounded-2xl pointer-events-none">
              <span className="text-[8px] font-black text-red-500 uppercase tracking-widest bg-red-500/10 px-2 py-1 rounded">API Offline - Fallback aktiv</span>
@@ -233,6 +235,12 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ settings }) => {
               </span>
               <span className="text-2xl font-bold text-cyan-500 ml-1">°C</span>
             </div>
+            
+            {/* Added Wind Speed */}
+            <div className="flex items-center gap-1.5 mt-2 text-zinc-500">
+              <Wind size={14} className="text-cyan-500" />
+              <span className="text-xs font-black uppercase tracking-widest">{weatherData?.windSpeed ?? 0} km/h</span>
+            </div>
           </div>
           <IconComponent 
             name={currentIcon} 
@@ -241,7 +249,7 @@ export const WeatherWidget: React.FC<WeatherWidgetProps> = ({ settings }) => {
         </div>
 
         {/* 5-Day Forecast - Expanded */}
-        <div className={`mt-2 p-4 rounded-3xl border flex justify-between items-center ${isDark ? 'bg-black/20 border-zinc-800/50' : 'bg-zinc-50 border-zinc-100'}`}>
+        <div className={`mt-1 p-4 rounded-3xl border flex justify-between items-center ${isDark ? 'bg-black/20 border-zinc-800/50' : 'bg-zinc-50 border-zinc-100'}`}>
           {displayForecast.map((f, idx) => (
             <div key={idx} className="flex flex-col items-center gap-2 group">
               <span className={`text-[10px] font-black uppercase tracking-wider ${isDark ? 'text-zinc-500 group-hover:text-zinc-300' : 'text-zinc-400 group-hover:text-zinc-600'} transition-colors`}>{f.day}</span>

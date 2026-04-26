@@ -12,14 +12,14 @@ export const SpotifyWidget: React.FC<SpotifyWidgetProps> = ({ settings }) => {
     <WidgetCard title="Spotify" settings={settings} icon={<Music2 className="w-5 h-5" />}>
       <button 
         onClick={() => window.open('https://open.spotify.com', '_blank')}
-        className="w-full h-full flex flex-col items-center justify-center gap-4 group transition-all duration-300"
+        className="w-full h-full flex flex-col items-center justify-center gap-1 group transition-all duration-300"
       >
-        <div className="w-24 h-24 bg-[#1DB954] rounded-full flex items-center justify-center shadow-2xl shadow-[#1DB954]/20 group-hover:scale-110 transition-transform">
-          <svg viewBox="0 0 24 24" fill="currentColor" className="w-14 h-14 text-black">
+        <div className="w-9 h-9 shrink-0 bg-[#1DB954] rounded-full flex items-center justify-center shadow-2xl shadow-[#1DB954]/20 group-hover:scale-110 transition-transform">
+          <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-black">
             <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.494 17.306c-.215.353-.674.464-1.027.249-2.846-1.737-6.429-2.131-10.648-1.168-.403.092-.806-.16-.898-.564-.093-.404.159-.807.563-.9 4.629-1.059 8.583-.612 11.761 1.332.353.214.464.673.249 1.027zm1.468-3.261c-.27.441-.85.579-1.291.309-3.259-2.003-8.228-2.584-12.083-1.414-.496.151-1.018-.129-1.169-.625-.152-.495.128-1.017.624-1.168 4.415-1.34 9.897-.686 13.61 1.597.441.27.579.85.309 1.291v.01zm.126-3.415C15.027 8.16 8.324 7.938 4.448 9.116c-.611.186-1.258-.168-1.444-.778-.186-.611.168-1.259.778-1.445 4.453-1.352 11.854-1.096 16.516 1.671.55.327.734 1.034.407 1.584-.326.551-1.033.735-1.583.408v-.026z"/>
           </svg>
         </div>
-        <span className="text-lg font-black uppercase tracking-[0.2em] opacity-40 group-hover:opacity-100 transition-opacity">Spotify</span>
+        <span className="text-[10px] font-bold uppercase tracking-[0.2em] opacity-40 group-hover:opacity-100 transition-opacity">Spotify</span>
       </button>
     </WidgetCard>
   );
