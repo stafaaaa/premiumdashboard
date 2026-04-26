@@ -11,7 +11,16 @@ interface WidgetCardProps {
 }
 
 export const WidgetCard: React.FC<WidgetCardProps> = ({ title, settings, children, icon, className = "" }) => {
-  const isDark = settings.theme === 'dark';
+  const THEME_STYLES = {
+    dark: { card: 'bg-zinc-900/80 border-zinc-800 shadow-2xl', header: 'bg-zinc-900/50 border-zinc-800', text: 'text-white', sub: 'text-zinc-400' },
+    light: { card: 'bg-white/80 border-zinc-200 shadow-xl', header: 'bg-zinc-50 border-zinc-100', text: 'text-zinc-950', sub: 'text-zinc-500' },
+    sunset: { card: 'bg-orange-950/40 border-orange-800/30 backdrop-blur-3xl shadow-2xl', header: 'bg-orange-900/40 border-orange-800/20', text: 'text-orange-50', sub: 'text-orange-300' },
+    ocean: { card: 'bg-blue-950/40 border-blue-800/30 backdrop-blur-3xl shadow-2xl', header: 'bg-blue-900/40 border-blue-800/20', text: 'text-blue-50', sub: 'text-blue-300' },
+    forest: { card: 'bg-emerald-950/40 border-emerald-800/30 backdrop-blur-3xl shadow-2xl', header: 'bg-emerald-900/40 border-emerald-800/20', text: 'text-emerald-50', sub: 'text-emerald-300' },
+    midnight: { card: 'bg-indigo-950/40 border-indigo-800/30 backdrop-blur-3xl shadow-2xl', header: 'bg-indigo-900/40 border-indigo-800/20', text: 'text-indigo-50', sub: 'text-indigo-300' },
+  };
+
+  const style = THEME_STYLES[settings.theme] || THEME_STYLES.dark;
 
   const getFontSize = () => {
     switch (settings.fontSize) {
@@ -37,26 +46,26 @@ export const WidgetCard: React.FC<WidgetCardProps> = ({ title, settings, childre
       initial={{ opacity: 1 }}
       animate={{ opacity: 1, scale: 1 }}
       className={`
-        ${isDark ? 'bg-zinc-800 border-zinc-700 shadow-2xl' : 'bg-white border-zinc-200 shadow-xl'} 
-        border rounded-3xl overflow-hidden flex flex-col h-full group transition-colors duration-500
+        ${style.card} 
+        border rounded-3xl overflow-hidden flex flex-col h-full group transition-all duration-500
         ${className}
       `}
     >
       <div 
         className={`
-          ${isDark ? 'bg-zinc-800/50 border-zinc-700' : 'bg-zinc-50 border-zinc-100'} 
+          ${style.header} 
           px-4 py-3 
           flex items-center justify-between 
           border-b
         `}
       >
         <div className="flex items-center gap-3">
-          {icon && <div className={`${isDark ? 'text-zinc-400' : 'text-zinc-500'} group-hover:scale-110 transition-transform`}>{icon}</div>}
+          {icon && <div className={`${style.sub} group-hover:scale-110 transition-transform`}>{icon}</div>}
           <h2 
             className={`
               ${getFontSize()} 
               ${getFontWeight()} 
-              ${isDark ? 'text-white' : 'text-zinc-900'} 
+              ${style.text} 
               uppercase tracking-tighter
             `}
           >
@@ -65,8 +74,8 @@ export const WidgetCard: React.FC<WidgetCardProps> = ({ title, settings, childre
         </div>
         
         <div className="flex gap-1.5">
-          <div className={`w-1.5 h-1.5 rounded-full ${isDark ? 'bg-zinc-800' : 'bg-zinc-200'}`} />
-          <div className={`w-1.5 h-1.5 rounded-full ${isDark ? 'bg-zinc-800' : 'bg-zinc-200'}`} />
+          <div className={`w-1.5 h-1.5 rounded-full ${settings.theme === 'light' ? 'bg-zinc-200' : 'bg-white/10'}`} />
+          <div className={`w-1.5 h-1.5 rounded-full ${settings.theme === 'light' ? 'bg-zinc-200' : 'bg-white/10'}`} />
         </div>
       </div>
       

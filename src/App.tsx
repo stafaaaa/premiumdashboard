@@ -48,26 +48,49 @@ export default function App() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newSettings));
   };
 
-  const isDark = settings.theme === 'dark';
+  const THEMES = {
+    dark: { bg: 'bg-zinc-950', text: 'text-zinc-100' },
+    light: { bg: 'bg-zinc-50', text: 'text-zinc-900' },
+    sunset: { bg: 'bg-orange-950', text: 'text-orange-50' },
+    ocean: { bg: 'bg-blue-950', text: 'text-blue-50' },
+    forest: { bg: 'bg-emerald-950', text: 'text-emerald-50' },
+    midnight: { bg: 'bg-indigo-950', text: 'text-indigo-50' },
+  };
+
+  const currentTheme = THEMES[settings.theme] || THEMES.dark;
 
   return (
-    <div className={`min-h-screen font-sans selection:bg-white/30 overflow-x-hidden transition-colors duration-700 ${isDark ? 'bg-zinc-900 text-zinc-100' : 'bg-zinc-50 text-zinc-900'}`}>
-      {/* Top Status Bar (Fridge Style) */}
-      <nav className={`h-16 border-b px-6 flex items-center justify-between sticky top-0 z-50 overflow-hidden ${isDark ? 'bg-zinc-800 border-zinc-700' : 'bg-white border-zinc-200'}`}>
-        {/* Shine top bar */}
-        <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-        
-        <div className="flex items-center gap-6">
-          <div className="flex flex-col">
-            <span className={`text-3xl font-black tracking-tighter leading-none ${isDark ? 'text-white' : 'text-zinc-950'}`}>
-              {format(currentTime, 'HH:mm')}
-            </span>
-            <span className={`text-[8px] font-black uppercase tracking-[0.3em] ${isDark ? 'text-zinc-500' : 'text-zinc-400'}`}>
-              {format(currentTime, 'EEEE, dd. MMMM')}
-            </span>
-          </div>
+    <div className={`min-h-screen font-sans selection:bg-white/30 overflow-x-hidden transition-all duration-700 relative ${currentTheme.bg} ${currentTheme.text}`}>
+      {/* Background Image Layer */}
+      {settings.backgroundImage && (
+        <div 
+          className="fixed inset-0 z-0 transition-opacity duration-1000 pointer-events-none"
+          style={{
+            backgroundImage: `url(${settings.backgroundImage})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            opacity: settings.theme === 'light' ? 0.15 : 0.4
+          }}
+        />
+      )}
+
+      <div className="relative z-10 flex flex-col h-screen">
+        {/* Top Status Bar (Fridge Style) */}
+        <nav className={`h-16 border-b px-6 flex items-center justify-between sticky top-0 z-50 overflow-hidden ${settings.theme === 'light' ? 'bg-white/80 border-zinc-200' : 'bg-black/40 border-zinc-700'} backdrop-blur-md`}>
+          {/* Shine top bar */}
+          <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
           
-          <div className="h-8 w-px bg-zinc-800" />
+          <div className="flex items-center gap-6">
+            <div className="flex flex-col text-left">
+              <span className={`text-3xl font-black tracking-tighter leading-none ${settings.theme === 'light' ? 'text-zinc-950' : 'text-white'}`}>
+                {format(currentTime, 'HH:mm')}
+              </span>
+              <span className={`text-[8px] font-black uppercase tracking-[0.3em] ${settings.theme === 'light' ? 'text-zinc-400' : 'text-zinc-500'}`}>
+                {format(currentTime, 'EEEE, dd. MMMM')}
+              </span>
+            </div>
+            
+            <div className={`h-8 w-px ${settings.theme === 'light' ? 'bg-zinc-200' : 'bg-zinc-800'}`} />
           
           <div className="hidden md:flex items-center gap-4">
             <div className="flex flex-col">
@@ -167,6 +190,7 @@ export default function App() {
           background: #3f3f46;
         }
       `}</style>
+      </div>
     </div>
   );
 }
